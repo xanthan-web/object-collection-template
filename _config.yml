@@ -1,0 +1,5 @@
+title: Object Collection Template
+baseurl: "/object-collection-template"   # leave empty for username.github.io repos
+analytics_id:   # optional: paste your Google Analytics measurement ID (G-XXXXXXXXXX)
+search: true    # set to false to disable site search
+theme_css: canyon-wall   # see docs/reference/themes; delete this line for the default look
