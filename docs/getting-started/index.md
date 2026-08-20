@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
       name: 'Portfolio',
       description: 'Show off your work and interests. Comes with sample pages like `about`, `cv`, etc.',
       repoName: 'xanthan-web/portfolio-template',
-      repoUrl: 'http://github.com/xanthan-web/portfolio-template',
+      repoUrl: 'https://github.com/xanthan-web/portfolio-template',
       webUrl: 'https://xanthan-web.github.io/portfolio-template',
       liveUrl: 'https://xanthan-web.github.io/alexandra-ruiz/',
       default: true
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
       name: 'Essay Collection',
       description: 'Gather writing by many people into a shared public site. Contributors add readable pages; the collection can outlast the semester that started it.',
       repoName: 'xanthan-web/class-project-template',
-      repoUrl: 'http://github.com/xanthan-web/class-project-template',
+      repoUrl: 'https://github.com/xanthan-web/class-project-template',
       webUrl: 'https://xanthan-web.github.io/class-project-template',
       liveUrl: 'https://amaranth.unm.edu/campus-history/'
     },
@@ -62,16 +62,20 @@ document.addEventListener('DOMContentLoaded', function() {
       name: 'Object Collection',
       description: 'Build a collection around things rather than prose. Each object gets a page with an image, a date, tags, and optional coordinates; an image-first grid and a map assemble the directory.',
       repoName: 'xanthan-web/object-collection-template',
-      repoUrl: 'http://github.com/xanthan-web/object-collection-template',
+      repoUrl: 'https://github.com/xanthan-web/object-collection-template',
       webUrl: 'https://xanthan-web.github.io/object-collection-template',
-      liveUrl: 'https://amaranth.unm.edu/silk-road/'
+      liveUrl: 'https://amaranth.unm.edu/silk-road/',
+      // Listed so people can see it coming, but not yet selectable: the
+      // starter repository exists and is still empty, so choosing it would
+      // point every step below at a site that is not there.
+      comingSoon: true
     },
     {
       id: 'scrollstory',
       name: 'Single Story',
       description: 'A StoryMaps-style site for an immersive scrolling narrative, built from editable text files instead of a proprietary platform.',
       repoName: 'xanthan-web/scrollstory-template',
-      repoUrl: 'http://github.com/xanthan-web/scrollstory-template',
+      repoUrl: 'https://github.com/xanthan-web/scrollstory-template',
       webUrl: 'https://xanthan-web.github.io/scrollstory-template',
       liveUrl: 'https://amaranth.unm.edu/studio/name-origins/'
     }
@@ -83,7 +87,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     templates.forEach(template => {
       const card = document.createElement('div');
-      card.className = 'setup-option' + (template.default ? ' selected' : '');
+      card.className = 'setup-option'
+        + (template.default ? ' selected' : '')
+        + (template.comingSoon ? ' setup-option--coming-soon' : '');
       card.dataset.templateId = template.id;
 
       const input = document.createElement('input');
@@ -104,14 +110,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
       const useBtn = document.createElement('button');
       useBtn.className = 'template-btn primary';
-      useBtn.textContent = 'Choose this one';
-      useBtn.addEventListener('click', () => selectTemplate(template.id));
+      if (template.comingSoon) {
+        useBtn.textContent = 'Coming soon';
+        useBtn.disabled = true;
+      } else {
+        useBtn.textContent = 'Choose this one';
+        useBtn.addEventListener('click', () => selectTemplate(template.id));
+      }
 
-      const viewBtn = document.createElement('a');
-      viewBtn.className = 'template-btn';
-      viewBtn.textContent = 'View starter site';
-      viewBtn.href = template.webUrl || template.repoUrl;
-      viewBtn.target = '_blank';
+      // The starter site is only worth linking to once it exists.
+      let viewBtn = null;
+      if (!template.comingSoon) {
+        viewBtn = document.createElement('a');
+        viewBtn.className = 'template-btn';
+        viewBtn.textContent = 'View starter site';
+        viewBtn.href = template.webUrl || template.repoUrl;
+        viewBtn.target = '_blank';
+      }
 
       // Live example button (only for starter sites with a real-world example)
       if (template.liveUrl) {
@@ -123,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
         buttonContainer.appendChild(liveBtn);
       }
 
-      buttonContainer.appendChild(viewBtn);
+      if (viewBtn) buttonContainer.appendChild(viewBtn);
       buttonContainer.appendChild(useBtn);
 
       card.appendChild(input);
@@ -135,6 +150,16 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function selectTemplate(templateId) {
+    // A starter site that is not ready cannot drive the rest of the page —
+    // every step below would name a repository that is not there. This also
+    // catches arriving with ?template=object-collection in the URL.
+    const requested = templates.find(t => t.id === templateId);
+    if (!requested || requested.comingSoon) {
+      const fallback = templates.find(t => t.default && !t.comingSoon);
+      if (!fallback || fallback.id === templateId) return;
+      templateId = fallback.id;
+    }
+
     // Update radio button
     const radio = document.getElementById(`option-${templateId}`);
     if (radio) radio.checked = true;
@@ -148,6 +173,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Reset all primary buttons, then mark the selected one
     document.querySelectorAll('.template-btn.primary').forEach(btn => {
+      // Leave a disabled button alone: its label says why it cannot be
+      // picked, and this reset would overwrite that with an invitation.
+      if (btn.disabled) return;
       btn.textContent = 'Choose this one';
       btn.classList.remove('selected-btn');
     });
@@ -238,8 +266,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 Rather than start from scratch, you'll copy a complete working site with example content. GitHub calls this using a template, so that's the wording on the button.
 
-1. Go to the <a href="http://github.com/xanthan-web/xanthan" class="template-repo-link">template repository</a>
-2. Click the green **"Use this Template"** button (upper right)
+1. Go to the <a href="https://github.com/xanthan-web/xanthan" class="template-repo-link" target="_blank" rel="noopener">template repository</a>
+2. Click the green **"Use this template"** button (upper right)
 3. Select **"Create a new repository"** from the dropdown
 
 ---
@@ -295,46 +323,32 @@ Don't stress—you can rename it later or start over if needed.
 </div>
 {:/nomarkdown}
 
-When ready, click the green **"Create Repository"** button.
+When ready, click the green **"Create repository from template"** button.
 
 ---
 
-## Step 5: Configure Your Site
+## Step 5: Set Your Site's Address
 
-{::nomarkdown}
-<div class="template-guidance portfolio" style="display: none;">
-{:/nomarkdown}
+Xanthan has to be told where your site lives, and that depends on what you named
+the repository in Step 4. There is one rule with one exception:
 
-**If you named your repository `YOUR-USERNAME.github.io`**, you need to make one quick edit:
+- **Named it anything else** — set `baseurl` to that name, with a leading slash.
+  A repository called `medieval-maps` gets `baseurl: /medieval-maps`.
+- **Named it `YOUR-USERNAME.github.io`** — leave `baseurl` empty. That site lives
+  at the root of your account, so there is no sub-path to add.
+
+To make the edit:
 
 1. Click the **"Code"** tab (top left)
 2. Find and click `_config.yml` in the file list
 3. Click the pencil icon (✏️) to edit
-4. Make sure the `baseurl:` line is **empty** (nothing after the colon):
+4. Set the `baseurl:` line:
+   ```yaml
+   baseurl: /your-repository-name
+   ```
+   or, for a `USERNAME.github.io` repository, leave it empty:
    ```yaml
    baseurl:
-   ```
-5. Click **"Commit changes"** (green button, top right)
-6. Click **"Commit changes"** again in the popup
-
-**Why empty?** Since your site lives at the root (`username.github.io/`), you don't need a subdirectory path.
-
-{::nomarkdown}
-</div>
-{:/nomarkdown}
-
-{::nomarkdown}
-<div class="template-guidance class-project object-collection scrollstory" style="display: none;">
-{:/nomarkdown}
-
-If you named your repository something other than the starter site repository name, you need to make one quick edit to get your site running.
-
-1. Click the **"Code"** tab (top left)
-2. Find and click `_config.yml` in the file list
-3. Click the pencil icon (✏️) to edit
-4. Change the `baseurl:` line to match your repository name exactly:
-   ```yaml
-   baseurl: /your-repository-name/
    ```
 5. Click **"Commit changes"** (green button, top right)
 6. Click **"Commit changes"** again in the popup
@@ -342,12 +356,10 @@ If you named your repository something other than the starter site repository na
 {% include typography/alert.html
 class="warning"
 title="Your baseurl and repository name must match exactly"
-text="If your repository is named `medieval-maps`, your baseurl must be `/medieval-maps/` — same capitalization, same hyphens, same everything. A mismatch (even `Medieval-Maps` vs `medieval-maps`) will break your site's links, images, and styles. This is the most common setup mistake."
+text="If your repository is named `medieval-maps`, your baseurl must be `/medieval-maps` — same capitalization, same hyphens, a leading slash and no trailing one. A mismatch (even `Medieval-Maps` vs `medieval-maps`) will break your site's links, images, and styles. This is the most common setup mistake."
 %}
 
-{::nomarkdown}
-</div>
-{:/nomarkdown}
+You do not need to set `url`. GitHub fills that in for you.
 
 ---
 
