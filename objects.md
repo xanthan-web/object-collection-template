@@ -8,9 +8,11 @@ summary: Every object in the collection, newest folder first — an image-first 
 # Objects
 
 {: .lede}
-Every object in the collection. Nothing on this page is a list you maintain by
-hand: it is assembled from whatever folders exist under `objects/`, so adding a
-folder adds a tile here.
+Every object in the collection, squared off and labelled so the entries can be
+read down like a list. Nothing on this page is maintained by hand: it is
+assembled from whatever folders exist under `objects/`, so adding a folder adds
+a tile here. The [gallery]({{ site.baseurl }}/gallery) shows the same objects at
+their own proportions, for looking rather than finding.
 
 {% assign objects = site.pages
    | where_exp: "p", "p.path contains 'objects/'"

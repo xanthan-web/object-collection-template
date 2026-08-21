@@ -32,6 +32,7 @@ objects/
     images/         ← that object's images, kept beside it
 index.md            ← homepage: hero, featured objects, links
 objects.md          ← the grid, assembled from objects/
+gallery.md          ← the same objects as a full-width wall of pictures
 map.md              ← every object with geo coordinates
 about.md            ← what the collection is and who made it
 instructions.md     ← how to add an object

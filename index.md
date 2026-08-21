@@ -13,6 +13,8 @@ hero:
   buttons:
     - label: Browse the Objects
       url: /objects
+    - label: See the Gallery
+      url: /gallery
     - label: See Them on a Map
       url: /map
 
@@ -28,6 +30,9 @@ explore:
   - label: All Objects
     url: /objects
     text: The full grid, assembled from whatever folders exist under objects/.
+  - label: Gallery
+    url: /gallery
+    text: The same objects as a wall of pictures, each at its own proportions.
   - label: Map
     url: /map
     text: Every object that carries geo coordinates in its front matter.
