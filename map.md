@@ -1,58 +1,40 @@
 ---
 title: Map
-layout: map
+layout: default
+date: 2026-01-01
+summary: Every object that carries coordinates, placed where it was made — the collection read as a geography rather than a list.
 ---
 
-<!-- define JSON object for displaying data from site pages -->
-<script id="page-data" type="application/json">
-[
-  {% assign first = true %}
-  {% for page in site.pages %}
-    {% if page.geo %}
-      {% unless first %},{% endunless %}
-      {
-        "title": {{ page.title | jsonify }},
-        "url": {{ page.url | jsonify }},
-        "placename": {{ page.placename | jsonify }},
-        "summary": {{ page.summary | jsonify }},
-        "geo": {{ page.geo | jsonify }}
-      }
-      {% assign first = false %}
-    {% endif %}
-  {% endfor %}
-]
-</script>
+# Where the Objects Come From
 
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+{: .lede}
+The same collection, arranged by place instead of by folder. An object appears
+here as soon as its front matter carries `geo:` coordinates, and its marker
+opens onto the catalogue facts already written there — nothing on this page is
+a second list to keep in step with the first.
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+{% include nav/map.html
+  folder="objects"
+  fields="object-date,medium,collection"
+  class="map-wrap--wide"
+  height="70vh"
+%}
 
-<div id="map" style="height: 90vh"></div>
+## Putting an object on the map
 
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  // Get the JSON data from the script tag
-  const pages = JSON.parse(document.getElementById('page-data').textContent);
+Add two lines to an object's front matter and it arrives:
 
-  // Initialize the map
-  var map = L.map('map').setView([39, -98], 4);
+```yaml
+geo: [38.1026, 46.3646]
+placename: Tabriz, Iran
+```
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 18,
-    attribution: '© OpenStreetMap contributors'
-  }).addTo(map);
+Right-click a spot in [Google Maps](https://maps.google.com) and click the
+coordinates at the top of the menu to copy them. Objects without coordinates
+simply do not appear — an object whose origin is unknown or contested is often
+better left off the map than pinned to a guess.
 
-  pages.forEach(page => {
-    if (page.geo && page.geo.length === 2) {
-      L.marker(page.geo)
-        .addTo(map)
-        .bindPopup(`<a href="{{site.baseurl}}${page.url}">
-        <h4>${page.placename}</h4>
-        <h5>${page.title}</h5>
-        <div class="map-card">${page.summary}</div>
-        </a>`);
-    }
-  });
-});
-</script>
+The popup is assembled from the object's own front matter: `thumbnail`,
+`title`, `placename`, then whatever `fields` names in the include above —
+here `object-date`, `medium`, and `collection` — and finally `summary`. Change
+that list to change what every popup shows.

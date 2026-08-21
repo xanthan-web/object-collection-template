@@ -37,7 +37,7 @@ catalogue facts live. Write them once here and they appear everywhere.
 |-------|----------|--------------|
 | `title` | yes | The object's name, used on the page, the grid, and the map |
 | `summary` | yes | One or two sentences. Appears under the title on the grid and in the map popup |
-| `thumbnail` | yes | The image the grid tile uses. A path inside this folder, e.g. `images/bowl.jpg` |
+| `thumbnail` | yes | The image the grid tile uses, and the picture in the map popup. A path inside this folder, e.g. `images/bowl.jpg` |
 | `header-image` | no | The wide image across the top of the object's own page |
 | `header-title` | no | The text shown on that header. Without it the header renders empty |
 | `header-tier` | no | `hero` (full screen), `section` (~60vh), or `banner` (~22vh). The samples use `banner` |
@@ -45,11 +45,12 @@ catalogue facts live. Write them once here and they appear everywhere.
 | `author` | no | Who wrote the entry. Shown on cards that display a byline |
 | `geo` | no | `[latitude, longitude]`. Add it and the object appears on the map; leave it out and it does not |
 | `placename` | no | Where the object is from, shown in the map popup |
-| `medium`, `object-date`, `collection` | no | Your own catalogue fields. Add whatever your collection needs |
+| `medium`, `object-date`, `collection` | no | Your own catalogue fields. These three are printed in the map popup because `map.md` asks for them by name; add whatever else your collection needs |
 | `tags` | no | A list. Objects that share a tag can be found together |
 
 Field names you invent yourself work the same way as the ones above. If your
-collection needs `accession-number` or `excavation-season`, add it.
+collection needs `accession-number` or `excavation-season`, add it — and if you
+want it in the map popup as well, add it to the `fields` list in `map.md`.
 
 ---
 
