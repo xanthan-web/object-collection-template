@@ -2,6 +2,8 @@
   url: "/objects"
 - title: "Gallery"
   url: "/gallery"
+- title: "Essays"
+  url: "/essays"
 - title: "Map"
   url: "/map"
 - title: "About"

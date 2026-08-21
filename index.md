@@ -33,6 +33,9 @@ explore:
   - label: Gallery
     url: /gallery
     text: The same objects as a wall of pictures, each at its own proportions.
+  - label: Essays
+    url: /essays
+    text: Thematic threads that read across the objects rather than one at a time.
   - label: Map
     url: /map
     text: Every object that carries geo coordinates in its front matter.
@@ -60,6 +63,12 @@ live in the front matter of that page, so they are written once and appear
 wherever they are needed: on the grid, on the map, in search.
 
 Nothing indexes objects by hand. Add a folder and it appears.
+
+The [essays]({{ site.baseurl }}/essays) are the other half of the arrangement.
+An object page describes one thing; an essay follows a motif, a material, or a
+gap in the record through several of them. Objects stay independent of the
+essays that cite them, so an argument can be added or withdrawn without
+disturbing the collection underneath it.
 
 {% include layout/picks.html
   items=page.featured
