@@ -7,15 +7,17 @@ summary: How to add an object to this collection, and what each front matter fie
 
 {% include nav/scrollspy-toc.html %}
 
-# Adding an Object
+# Adding to the Collection
 
 {: .lede}
-Everything in this collection is a folder with a page in it. To add an object,
-copy one of the samples, rename the folder, and change what is inside. Nothing
-else on the site needs editing — the grid, the map, and search all read from the
-page you just made.
+Everything in this collection is a folder with a page in it, whether it is an
+object or an essay about several. To add either, copy one of the samples, rename
+the folder, and change what is inside. Nothing else on the site needs editing —
+the grid, the gallery, the map, and search all read from the page you just made.
 
-## The short version
+## Adding an object
+
+### The short version
 
 1. Copy any folder under `objects/` and give the copy a new name.
 2. Put your images in its `images/` folder.
@@ -27,9 +29,7 @@ page you just made.
 The folder name becomes the object's web address, so use lowercase words joined
 by hyphens: `bowl-with-dragons`, not `Bowl With Dragons (final).md`.
 
----
-
-## What each front matter field does
+### What each front matter field does
 
 The block at the top of an object page, between the `---` lines, is where the
 catalogue facts live. Write them once here and they appear everywhere.
@@ -52,6 +52,65 @@ catalogue facts live. Write them once here and they appear everywhere.
 Field names you invent yourself work the same way as the ones above. If your
 collection needs `accession-number` or `excavation-season`, add it — and if you
 want it in the map popup as well, add it to the `fields` list in `map.md`.
+
+---
+
+## Adding an essay
+
+An object page describes one thing. An essay follows something through several
+of them, and lives in exactly the same shape: a folder under `essays/` with an
+`index.md` inside it. Copy one of the two samples and change what is in it.
+
+Essays use `title`, `summary`, `thumbnail`, `tags`, and the `header-` fields the
+same way objects do. Two fields are theirs alone:
+
+| Field | Required | What it does |
+|-------|----------|--------------|
+| `position` | no | A number. Fixes the order the essays appear in on the essays page; without it the order is whatever Jekyll happened to find |
+| `objects` | no | The objects the essay argues from, each with a `slug` (the object's folder name) and an optional `label` |
+
+The `objects` block is what builds the strip of thumbnails inside an essay:
+
+```yaml
+objects:
+  - slug: buddha-head
+    label: Gandhara, 4th–5th century
+  - slug: bowl-with-dragons
+    label: Tabriz, 1210
+```
+
+```liquid
+{% raw %}{% include layout/picks.html
+  items=page.objects
+  collection="objects"
+  variant="strip"
+  columns=2
+  kicker="Objects in this essay"
+  title="Two things that borrowed a shape."
+%}{% endraw %}
+```
+
+Each object's picture, title, and link come from its own page, so the strip
+never needs updating when an object does. Name a slug that does not exist and
+the page prints a visible warning rather than quietly dropping it.
+
+Link the objects in the prose as well as in the strip — a reader partway through
+a paragraph should be able to go and look at the thing being described. An essay
+does not own the objects it cites: several essays can argue from the same object,
+and deleting an essay leaves the objects untouched.
+
+An essay borrows the objects' images by default, with a site-root path:
+
+```liquid
+{% raw %}{% include images/figure.html
+  image-path="/objects/buddha-head/images/buddha-head-back.jpg"
+  alt-text="The reverse of the stucco head"
+%}{% endraw %}
+```
+
+When an essay needs pictures of its own — a map, a diagram, a comparison from
+outside the collection — give it an `images/` folder next to its `index.md` and
+write the shorter relative path, exactly as the objects do.
 
 ---
 
@@ -92,6 +151,11 @@ the museum and link the record. Captions are the right place.
 
 ## Removing the samples
 
-The three sample objects are stand-ins. When you have your own, delete their
-folders, then edit `index.md` at the top level — the hero text, the three
-featured objects, and the closing links all name them.
+The three sample objects and the two sample essays are stand-ins. When you have
+your own, delete their folders, then edit `index.md` at the top level — the hero
+text, the three featured objects, and the closing links all name them.
+
+Delete the essays and nothing else breaks: the objects they cite carry on
+without them, and the essays page simply shows no cards. If your collection has
+no use for essays at all, remove the `essays/` folder and its line in
+`_data/nav-top.yml`.
